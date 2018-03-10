@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "CifradoHash";
+}
+
+<h2>CifradoHash</h2>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <label>Texto a cifrar o descifrar: </label>
+        <textarea rows="5" name="texto"
+               class="form-control">
+        </textarea>
+    </div>
+    <div>
+        <label>Contraseña: </label>
+        <input type="text" name="password"
+               class="form-control" />
+    </div>
+    <div>
+
+        <label>Resultado: </label>
+        <textarea rows="5" class="form-control"
+                  name="resultado">@ViewBag.Resultado</textarea>
+
+    </div>
+    <div>
+        <button type="submit" class="btn-success" name="accion"
+                value="cifrar">
+            Cifrar texto
+        </button>
+        <button type="submit" class="btn-default" name="accion"
+                value="descifrar">
+            Descifrar texto
+        </button>
+    </div>
+}
+@Html.Raw(ViewBag.Mensaje)
