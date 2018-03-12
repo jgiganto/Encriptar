@@ -131,7 +131,7 @@ namespace Encriptar.Models
                         {
 
                             cs.Write(bytesToBeDecrypted, 0, bytesToBeDecrypted.Length);
-                            // cs.Close(); Comentado para que no cierre la ejecuci
+                            // cs.Close(); Comentado para que no cierre la ejecución. 
 
 
                         }
