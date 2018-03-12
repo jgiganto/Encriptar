@@ -16,13 +16,11 @@ namespace Encriptar.Controllers
         {
             return View();
         }
-
         //POST: CifradoHash
         [HttpPost]
         public ActionResult CifradoHash(String texto
             , String password,String accion )
         {
-
 
             if (accion == "cifrar")
             {
@@ -34,11 +32,7 @@ namespace Encriptar.Controllers
                 var encriptado = Cipher.Decrypt(texto, password);
                 ViewBag.Resultado = encriptado.ToString();
             }
-
             return View();
-
-
         }
-
     }
 }

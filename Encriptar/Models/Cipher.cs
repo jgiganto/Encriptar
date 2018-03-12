@@ -11,9 +11,9 @@ namespace Encriptar.Models
     public static class Cipher
     {
         /// <summary>
-        /// Encrypt a string.
+        /// Encriptar un String.
         /// </summary>
-        /// <param name="plainText">String to be encrypted</param>
+        /// <param name="plainText">String que será encriptado</param>
         /// <param name="password">Password</param>
         public static string Encrypt(string plainText, string password)
         {
@@ -27,11 +27,11 @@ namespace Encriptar.Models
                 password = String.Empty;
             }
 
-            // Get the bytes of the string
+            // Get de los bytes del string
             var bytesToBeEncrypted = Encoding.UTF8.GetBytes(plainText);
             var passwordBytes = Encoding.UTF8.GetBytes(password);
 
-            // Hash the password with SHA256
+            // Hash para la password con SHA256
             passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
             var bytesEncrypted = Cipher.Encrypt(bytesToBeEncrypted, passwordBytes);
@@ -40,10 +40,10 @@ namespace Encriptar.Models
         }
 
         /// <summary>
-        /// Decrypt a string.
+        /// Desenciptar el string.
         /// </summary>
-        /// <param name="encryptedText">String to be decrypted</param>
-        /// <param name="password">Password used during encryption</param>
+        /// <param name="encryptedText">String que será desencriptado </param>
+        /// <param name="password">Password usada durante el proceso de encriptado </param>
         /// <exception cref="FormatException"></exception>
         public static string Decrypt(string encryptedText, string password)
         {
@@ -57,14 +57,14 @@ namespace Encriptar.Models
                 password = String.Empty;
             }
 
-            // Get the bytes of the string
+            // Get de los  bytes del string
             var bytesToBeDecrypted = Convert.FromBase64String(encryptedText);
             var passwordBytes = Encoding.UTF8.GetBytes(password);
 
             passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
             var bytesDecrypted = Cipher.Decrypt(bytesToBeDecrypted, passwordBytes);
-            //mio
+            //Aviso de error si la contraseña es erronea.
             if (bytesDecrypted == null)
             {
                 String mensaje = "Pw error";
@@ -78,8 +78,8 @@ namespace Encriptar.Models
         {
             byte[] encryptedBytes = null;
 
-            // Set your salt here, change it to meet your flavor:
-            // The salt bytes must be at least 8 bytes.
+            // Aquí configuramos el Salt o semilla, usa bits aleatorios para el proceso de encriptado.
+            // Debe tener al menos 8 bytes. 
             var saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
 
             using (MemoryStream ms = new MemoryStream())
@@ -92,7 +92,6 @@ namespace Encriptar.Models
                     AES.BlockSize = 128;
                     AES.Key = key.GetBytes(AES.KeySize / 8);
                     AES.IV = key.GetBytes(AES.BlockSize / 8);
-
                     AES.Mode = CipherMode.CBC;
 
                     using (var cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
@@ -100,7 +99,6 @@ namespace Encriptar.Models
                         cs.Write(bytesToBeEncrypted, 0, bytesToBeEncrypted.Length);
                         cs.Close();
                     }
-
                     encryptedBytes = ms.ToArray();
                 }
             }
@@ -112,8 +110,8 @@ namespace Encriptar.Models
         {
             byte[] decryptedBytes = null;
 
-            // Set your salt here, change it to meet your flavor:
-            // The salt bytes must be at least 8 bytes.
+            // Aquí configuramos el Salt o semilla, usa bits aleatorios para el proceso de encriptado.
+            // Debe tener al menos 8 bytes.
             var saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
 
             using (MemoryStream ms = new MemoryStream())
@@ -130,13 +128,13 @@ namespace Encriptar.Models
                     try
                     {
                         using (var cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
-                      {
-                        
+                        {
+
                             cs.Write(bytesToBeDecrypted, 0, bytesToBeDecrypted.Length);
-                         //   cs.Close();
-                     
-                       
-                      }
+                            // cs.Close(); Comentado para que no cierre la ejecuci
+
+
+                        }
                     }
                     catch
                     {
